@@ -45,6 +45,7 @@ tom is never the second argument of a parent fact, so unification fails against 
 ## P04
 
 Goals run left to right (goal order): X = f(Y, a) binds X, then Y = b binds Y, so X reads f(b,a)and Y=b, and the count is 1.
+Correction: Both bindings belong to one answer, and each = unifies only one way, so the second answer should be none.
 
 ## P05
 
@@ -60,7 +61,8 @@ The rule body runs as nested loops (goal order with backtracking): parent(tom, P
 
 ## P08
 
-After backtracking, those with tom as ancestor are sue and jim as liz has no child. The recursive clause then adds ann, pat, sue, jim through bob, so the count is 6.
+After backtracking, those with tom as ancestor are sue and jim as liz has no child. The recursive clause then adds ann, pat, sue, jim through bob, so the count is 6. 
+Correction: the base clause is listed first, so the direct children liz and bob come out before any descendant.
 
 ## P09
 
