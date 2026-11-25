@@ -31,13 +31,7 @@ Fail: grandparent(tom,X)
 
 ## Frames pushed and popped
 
-A Call line pushes a frame. Activity 15 gives every call a fresh frame, so this trace has four pushes: grandparent(tom,X), parent(tom,_), parent(liz,X), and parent(bob,X).
-
-An Exit line pops a frame. The call has an answer, so it returns that answer to its caller, and Activity 15 says a return pops the frame. A Fail line also pops a frame. The call has no answer left, so it returns nothing.
-
-A Redo line pushes nothing. No new call has started, so there is no fresh frame to build. Redo goes back to a saved place in the search instead.
-
-The trace has 6 Exit lines but only 4 Call lines, because one call can exit more than once. All 4 calls end with a Fail line, so no frame is left at the end.
+A Call line pushes a frame. Activity 15 gives every call a fresh frame, so this trace has four pushes: grandparent(tom,X), parent(tom,_), parent(liz,X), and parent(bob,X). An Exit line pops a frame. The call has an answer, so it returns that answer to its caller, and Activity 15 says a return pops the frame. A Fail line also pops a frame. The call has no answer left, so it returns nothing. A Redo line pushes nothing. No new call has started, so there is no fresh frame to build. Redo goes back to a saved place in the search instead. The trace has 6 Exit lines but only 4 Call lines, because one call can exit more than once. All 4 calls end with a Fail line, so no frame is left at the end.
 
 ## What a Redo goal still knows that a returned frame threw away
 
