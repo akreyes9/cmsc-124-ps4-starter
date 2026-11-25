@@ -32,35 +32,37 @@ nothing and the search ends after one answer.
 
 ## P01
 
-Write one to three sentences here. Name the rule that fixes each field.
+The facts are tested from top to bottom (clause order), so parent(tom, X) gives X=liz first. Backtracking resumes at the next fact, which gives X=bob next. After this, no later fact starts with tom, so the count is 2.
 
 ## P02
 
-Write one to three sentences here. Name the rule that fixes each field.
+With no variables, unification only checks the fact, and parent(tom, bob) matches, so the first answer is true. No later fact is the same, so there is no second answer (none) and the count is 1.
 
 ## P03
 
-Write one to three sentences here. Name the rule that fixes each field.
+tom is never the second argument of a parent fact, so unification fails against every fact. The query fails (false), and there is no second answer(none), so the count is 0.
 
 ## P04
 
-Write one to three sentences here. Name the rule that fixes each field.
+Goals run left to right (goal order): X = f(Y, a) binds X, then Y = b binds Y, so X reads f(b,a)and Y=b, and the count is 1.
+Correction: Both bindings belong to one answer, and each = unifies only one way, so the second answer should be none.
 
 ## P05
 
-Write one to three sentences here. Name the rule that fixes each field.
+Unification matches the arguments in pairs, X with a and b with Y, giving X=a,Y=b. Only one unifier exists, so the second answer is none and the count is 1.
 
 ## P06
 
-Write one to three sentences here. Name the rule that fixes each field.
+a and b are different atoms, and atoms unify only when they are identical. The goal fails (false), so there is no second answer and the count is 0.
 
 ## P07
 
-Write one to three sentences here. Name the rule that fixes each field.
+The rule body runs as nested loops (goal order with backtracking): parent(tom, P) gives liz, then bob. liz has no children, and bob gives ann then pat, so the count is 2.
 
 ## P08
 
-Write one to three sentences here. Name the rule that fixes each field.
+After backtracking, those with tom as ancestor are sue and jim as liz has no child. The recursive clause then adds ann, pat, sue, jim through bob, so the count is 6. 
+Correction: the base clause is listed first, so the direct children liz and bob come out before any descendant.
 
 ## P09
 

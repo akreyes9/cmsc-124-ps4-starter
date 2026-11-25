@@ -13,30 +13,43 @@
 %%% R1 -- the family.
 
 % sibling(X, Y): X and Y share a parent and are not the same person.
-%
-% Order matters. X \= Y succeeds only when X and Y are already bound to
-% different things, so put it after the goal that binds them.
-sibling(_, _) :-
-    throw(not_implemented(sibling/2)).
+sibling(X, Y) :-
+    parent(P, X),       % Find a parent P of X.
+    parent(P, Y),       % Check if P is also a parent of Y.
+    X \= Y.             % Make sure X and Y are different people.
 
 % cousin(X, Y): a parent of X and a parent of Y are siblings.
-cousin(_, _) :-
-    throw(not_implemented(cousin/2)).
+cousin(X, Y) :-
+    parent(PX, X),      % Find the parent of X.
+    parent(PY, Y),      % Find the parent of Y.
+    sibling(PX, PY).    % Check if their parents are siblings.
 
 % descendant(D, A): A is an ancestor of D.
-%
-% Two clauses, the mirror image of ancestor/2 in cases/kb.pl. The base
-% clause reads one parent fact. The recursive clause reads one parent fact
-% and then asks a smaller question.
-descendant(_, _) :-
-    throw(not_implemented(descendant/2)).
+% Base case: A is the direct parent of D.
+descendant(D, A) :-
+    parent(A, D).       % Check if A is the parent of D.
+
+% Recursive case: A is an ancestor of Ds parent.
+descendant(D, A) :-
+    parent(P, D),       % Find the parent P of D.
+    descendant(P, A).   % Check if P is a descendant of A.
 
 %%% R2 -- lists.
 
 % count_of(X, List, N): X occurs N times in List. N is 0 for the empty
-% list, which is your base case.
-count_of(_, _, _) :-
-    throw(not_implemented(count_of/3)).
+% Base case: An empty list contains zero occurrences.
+count_of(_, [], 0).
+
+% Recursive case: If the head matches X, count it and continue checking the tail.
+count_of(X, [H|T], N) :-
+    X = H,              % Check if the head matches X.
+    count_of(X, T, N1), % Count occurrences in the tail.
+    N is N1 + 1.        % Add one to the remaining count.
+
+% Recursive case: If the head does not match X, continue checking the tail without adding one.
+count_of(X, [H|T], N) :-
+    X \= H,             % Check if the head is different from X.
+    count_of(X, T, N).  % Keep the count from the tail.
 
 % rev(List, Reversed): Reversed holds the elements of List in the other
 % order. Reverse the tail. Then use join/3 to put the head at the end.
