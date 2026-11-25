@@ -66,33 +66,51 @@ Correction: the base clause is listed first, so the direct children liz and bob 
 
 ## P09
 
-The recursive clause is listed first, so Prolog descends to the deepest descendant before the base clause reports anything, giving sue then jim. Reordering clauses changes the order of answers but not the set, so the count is still 6.
+ancestor_r tries its recursive clause first, so the search goes down to the
+deepest person before anything comes out: sue under ann, then jim under pat.
+Each person's direct children come out after the branches below them, and the
+set is the same six people as P08, so the count is 6.
 
 ## P10
 
-Clause 1, parent(X, jim), gives pat. Clause 2 scans the parent facts in file order, so tom (fact 2) comes before bob (fact 4). jim has three ancestors, so the count is 3.
+ancestor tries its base clause first, so parent(pat, jim) gives X=pat. The
+recursive clause then goes through the parent lines in file order, giving tom
+(through bob) and then bob (through pat). So first is X=pat, second is X=tom,
+and the count is 3.
 
 ## P11
 
-Left recursion: the recursive goal reach(a, Z) comes before any edge is read, so each call repeats the same call infinitely and never gets smaller. No answer is ever produced, so every field is unbounded.
+The first clause of reach is the recursive one, and its first goal is reach(a,Z),
+the same call before any edge is read. It repeats forever and never finds an
+answer, so first, second and count are all unbounded.
 
 ## P12
 
-Right recursion reads an edge first, so the search finds a -> b -> c -> d (true). Backtracking into the c -> a edge goes around the cycle a -> b -> c -> a and succeeds again (true). The cycle never runs out of laps, so the count is unbounded.
+reach_r reads an edge before it recurses, so the search reaches d through a, b,
+c and finds true at once. On ; it goes back into c, takes edge(c,a), and the
+cycle repeats with no visited list, so second is true and the count is unbounded.
 
 ## P13
 
-The base fact len([], 0) ends the recursion, and each level adds 1 with N is M + 1, so N=3. The base clause and the recursive clause never both match the same list, so there is no second answer and the count is 1.
+len drops one item per call until [] gives 0, then each is adds 1 on the way
+back, so first is N=3. Only one clause fits each list shape, so second is none
+and the count is 1.
 
 ## P14
 
-Clause order: the base clause is tried first at each level, so the first cut is X=[],Y=[1,2]. Clause 2 then moves one item into X, giving X=[1],Y=[2] and finally X=[1,2],Y=[], however only the first and second are needed. A list of length n has n + 1 cuts, so the count is 3.
+join tries its base clause first, so X=[] and Y takes the whole list. Each
+round of the recursive clause moves one item from the front of the third list
+into X, giving X=[1] and then X=[1,2]. The list runs out after three splits, so
+the count is 3.
 
 ## P15
 
-Goal order: X > 2 runs first with X unbound, and an arithmetic comparison needs numbers, so it raises an error that aborts the whole query. elem never runs, so every field is error.
+Goals run left to right, so X > 2 runs before elem has given X a number. An
+unbound X makes > throw an instantiation error, so first, second and count are
+all error.
 
 ## P16
 
-Goal order: elem runs first and produces 1, 2, 3 on backtracking, and X > 2 filters them. Only 3 passes, so the first answer is X=3, there is no second answer, and the count is 1.
-
+Goals run left to right, so elem runs first and gives X the values 1, 2, 3 in
+turn. X > 2 is checked on each one. 1 and 2 fail and backtrack, and only 3
+passes. So first is X=3, there is no second answer, and count is 1.
